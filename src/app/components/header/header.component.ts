@@ -1,18 +1,20 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-header',
   standalone: true,
   imports: [RouterLink],
   templateUrl: './header.component.html',
-  styleUrl: './header.component.scss'
+  styleUrls: ['./header.component.scss'] // Correction : styleUrl doit être styleUrls
 })
 export class HeaderComponent {
 
-  private route: Router = injecting(ActivatedRoute);
+  // Correction : injection de Router via le constructeur
+  constructor(private router: Router) {}
 
   navigateToSignUpPage(): void {
-    this.route.navigateTo(/signup)
+    // Correction : utilisation de navigate() au lieu de navigateTo()
+    this.router.navigate(['/signup']); // Syntaxe correcte pour la navigation
   }
 }

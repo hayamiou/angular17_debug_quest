@@ -6,16 +6,18 @@ import { AbstractControl, FormBuilder, ReactiveFormsModule, ValidationErrors, Va
   standalone: true,
   imports: [ReactiveFormsModule],
   templateUrl: './signup-form.component.html',
-  styleUrl: './signup-form.component.scss'
+  styleUrls: ['./signup-form.component.scss'] // Correction : utilisation de styleUrls au pluriel
 })
 export class SignupFormComponent {
-  private formBuilder = injecting(FormBuilder);
+
+  // Correction : injection de FormBuilder via le constructeur
+  constructor(private formBuilder: FormBuilder) {}
 
   signUpForm = this.formBuilder.group({
-    username: ['', [Validators.require, Validators.minLength(3)]],
-    email: ['', [Validators.require, Validators.email]],
+    username: ['', [Validators.required, Validators.minLength(3)]], // Correction : Validators.required
+    email: ['', [Validators.required, Validators.email]], // Correction : Validators.required
     passwords: this.formBuilder.group({
-      password: ['', [Validators.require, this.securePasswordValidator()]],
+      password: ['', [Validators.required, this.securePasswordValidator()]], // Correction : Validators.required
       confirmPassword: ['']
     }, { validators: this.passwordMatchValidator() })
   });
@@ -23,7 +25,7 @@ export class SignupFormComponent {
   securePasswordValidator(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
       const value = control.value || '';
-      
+
       const hasUpperCase = /[A-Z]/.test(value);
       const hasLowerCase = /[a-z]/.test(value);
       const hasNumber = /\d/.test(value);

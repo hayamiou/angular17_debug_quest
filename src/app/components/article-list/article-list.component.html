@@ -1,10 +1,25 @@
 <h2>Articles Populaires</h2>
 <div class="main-container">
-  for (article of articles;) {
-    @if (articles.isPublished) {
-  <app-article-thumbnail (article)="article" (notifyLike)="handleLike()"></app-article-thumbnail>
-    }
-  } @empty {
-  <p>Aucun article publié pour le moment</p>
-  }
+  <!-- Erreur : Utilisation incorrecte de *ngIf et *ngFor sur le même élément -->
+  <!-- Solution : Séparation avec un ng-container pour gérer *ngFor et *ngIf indépendamment -->
+
+  <ng-container *ngIf="articles && articles.length > 0; else noArticles">
+    <ng-container *ngFor="let article of articles">
+      <!-- Erreur : Référence incorrecte d'`article` en dehors du scope de `*ngFor` -->
+      <!-- Solution : Assurer que `article` est bien dans le scope de `*ngFor` -->
+
+      <div *ngIf="article.isPublished">
+        <!-- Correction : Appel correct du composant avec [article]="article" et gestion de l’événement notifyLike -->
+        <app-article-thumbnail
+          [article]="article"
+          (notifyLike)="handleLike(article)"
+        ></app-article-thumbnail>
+      </div>
+    </ng-container>
+  </ng-container>
+
+  <!-- Template pour le cas où aucun article n'est publié -->
+  <ng-template #noArticles>
+    <p>Aucun article publié pour le moment</p>
+  </ng-template>
 </div>

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 
 @Component({
@@ -6,11 +6,13 @@ import { ActivatedRoute, ParamMap } from '@angular/router';
   standalone: true,
   imports: [],
   templateUrl: './article-page.component.html',
-  styleUrl: './article-page.component.scss'
+  styleUrls: ['./article-page.component.scss'] // Correction : styleUrl en styleUrls
 })
-export class ArticlePageComponent {
-  private route: ActivatedRoute = injecting(ActivatedRoute);
+export class ArticlePageComponent implements OnInit { // Ajout de OnInit pour ngOnInit
   articleId!: number;
+
+  // Correction : utilisation d'un constructeur pour injecter ActivatedRoute
+  constructor(private route: ActivatedRoute) {}
 
   ngOnInit() {
     this.route.paramMap.subscribe((params: ParamMap) => {

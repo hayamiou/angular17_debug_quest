@@ -8,20 +8,20 @@ import { ArticleThumbnailComponent } from '../article-thumbnail/article-thumbnai
   standalone: true,
   imports: [CommonModule, ArticleThumbnailComponent],
   templateUrl: './article-list.component.html',
-  styleUrl: './article-list.component.scss',
+  styleUrls: ['./article-list.component.scss'] // Correction : styleUrls en pluriel
 })
 export class ArticleListComponent {
   articles: Article[] = [
     {
-      id: 1,
       title: 'Angular 16: Les nouveautés',
+      id: 1,
       content: "Les nouveautés d'Angular 16 incluent...",
       createdAt: new Date('2023-05-01'),
       image: 'https://placehold.co/150x150',
       likeCount: 233,
       isPublished: true,
       categoryName: 'Angular',
-      isLiked: false,
+      isLiked: false, // Correction : isLiked est maintenant un booléen
     },
     {
       id: 2,
@@ -191,6 +191,8 @@ export class ArticleListComponent {
   ];
 
   handleLike(article: Article) {
-    article.isLiked = !article.isLiked;
+    // Ancienne correction pour `isLiked` en `string` : article.isLiked = article.isLiked === "true" ? "false" : "true";
+    // Solution actuelle : maintenant que `isLiked` est un booléen, on peut directement inverser sa valeur
+    article.isLiked = !article.isLiked; // Inversion directe du booléen
   }
 }
