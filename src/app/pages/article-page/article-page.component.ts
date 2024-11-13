@@ -1,22 +1,23 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import { Component, OnInit, inject } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { ApiService } from '../../services/api.service';
+import { Article } from '../../models/article.model';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-article-page',
   standalone: true,
-  imports: [],
   templateUrl: './article-page.component.html',
-  styleUrls: ['./article-page.component.scss'] // Correction : styleUrl en styleUrls
+  styleUrls: ['./article-page.component.scss']
 })
-export class ArticlePageComponent implements OnInit { // Ajout de OnInit pour ngOnInit
-  articleId!: number;
+export class ArticlePageComponent implements OnInit {
+  article$!: Observable<Article>; // Observable pour un article
 
-  // Correction : utilisation d'un constructeur pour injecter ActivatedRoute
-  constructor(private route: ActivatedRoute) {}
+  private apiService = inject(ApiService);
+  private route = inject(ActivatedRoute);
 
   ngOnInit() {
-    this.route.paramMap.subscribe((params: ParamMap) => {
-      this.articleId = Number(params.get('id'));
-    });
+    const id = Number(this.route.snapshot.paramMap.get('id'));
+    this.article$ = this.apiService.getArticleById(id); // Utilise le service pour récupérer l'article
   }
 }

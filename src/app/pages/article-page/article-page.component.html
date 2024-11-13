@@ -1,1 +1,5 @@
-<p>Article id {{ articleId }}</p>
+<ng-container *ngIf="article$ | async as article">
+  <h2>{{ article.title }}</h2>
+  <p>{{ article.content }}</p>
+  <p>Publié le {{ article.createdAt | date: 'dd/MM/yyyy' }}</p>
+</ng-container>
